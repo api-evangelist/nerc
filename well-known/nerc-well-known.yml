@@ -1,0 +1,117 @@
+generated: '2026-07-27'
+method: searched
+source: live probes of every NERC-operated host on 2026-07-27
+note: >-
+  NERC's own corporate host (www.nerc.com) serves no /.well-known document of any
+  kind - security.txt, openid-configuration, oauth-authorization-server,
+  oauth-protected-resource, api-catalog and ai-plugin.json all return HTTP 404.
+  The one real, anonymous, machine-readable discovery document anywhere in NERC's
+  surface belongs to the Electricity Information Sharing and Analysis Center
+  (E-ISAC), which NERC operates on Salesforce Experience Cloud: www.eisac.com
+  serves a valid OpenID Connect Discovery 1.0 document at
+  /.well-known/openid-configuration. It is the Salesforce platform's standard
+  issuer metadata rather than a NERC-authored developer contract, and every
+  resource it protects (/services/data/v62.0 returns HTTP 401
+  INVALID_SESSION_ID) is membership-gated - but the discovery document itself is
+  real, anonymous and captured verbatim here.
+  eroportal.nerc.net and www.nercalerts.com answer HTTP 200 on every probed path
+  because both return a soft-404 HTML error page (Adxstudio "Customer Portal"
+  error page and a Certrec-hosted HTML shell respectively); neither serves an
+  actual well-known document. Statuses below are the raw HTTP codes with the
+  soft-404 noted.
+hosts:
+- host: https://www.nerc.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /openapi.json
+    status: 404
+  - path: /swagger.json
+    status: 404
+  - path: /robots.txt
+    status: 200
+    file: nerc-robots.txt
+    kind: content-signals
+    note: >-
+      Carries a Cloudflare-managed Content Signals declaration -
+      "Content-Signal: search=yes,ai-train=no,use=reference" - asserted as an
+      express reservation of rights under Article 4 of EU Directive 2019/790,
+      plus Disallow blocks for Amazonbot, Applebot-Extended, Bytespider, CCBot,
+      ClaudeBot, CloudflareBrowserRenderingCrawler, Google-Extended, GPTBot and
+      meta-externalagent. This is NERC's only machine-readable statement of
+      agent/AI consent.
+- host: https://www.eisac.com
+  operator_note: E-ISAC, operated by NERC on Salesforce Experience Cloud.
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: nerc-eisac-openid-configuration.json
+    kind: openid-configuration
+    note: >-
+      Valid OIDC Discovery document, 2,267 bytes, issuer https://www.eisac.com.
+      Salesforce Experience Cloud platform metadata.
+  - path: /id/keys
+    status: 200
+    kind: jwks
+    note: JWKS (RSA keys) referenced by jwks_uri. Not saved - keys rotate.
+  - path: /services/data
+    status: 200
+    kind: version-list
+    note: >-
+      Salesforce REST API version list, anonymous. Enumerates platform API
+      versions from v31.0 forward. The versioned resources themselves are gated
+      (/services/data/v62.0 -> HTTP 401 INVALID_SESSION_ID).
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+  - path: /.well-known/oauth-protected-resource
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/ai-plugin.json
+    status: 401
+  - path: /robots.txt
+    status: 200
+    note: Default Salesforce communities robots.txt.
+- host: https://eroportal.nerc.net
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: SOFT 404 - Adxstudio "Customer Portal" HTML error page, not a security.txt.
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: SOFT 404 - same HTML error page, not JSON.
+  - path: /openapi.json
+    status: 200
+    note: SOFT 404 - same HTML error page, not a spec.
+- host: https://www.nercalerts.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: SOFT 404 - Certrec-hosted HTML shell, not a security.txt.
+  - path: /openapi.json
+    status: 200
+    note: SOFT 404 - same HTML shell, not a spec.
+- host: https://www.nerc.net
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /openapi.json
+    status: 404
+security_txt: none
+api_catalog: none

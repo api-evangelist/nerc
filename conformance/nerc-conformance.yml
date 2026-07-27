@@ -1,0 +1,144 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  Derived from live probes of NERC-operated hosts (2026-07-27), the E-ISAC OIDC
+  discovery document, and the absence of any NERC-published machine-readable API
+  contract.
+note: >-
+  NERC publishes no API, so almost every API-facing standard below is recorded as
+  not conforming for the plainest possible reason: there is no contract to
+  conform. The two genuine positives are (1) the OpenID Connect Discovery / OAuth
+  2.0 Authorization Server Metadata document served anonymously by the E-ISAC
+  Salesforce Experience Cloud issuer, and (2) the Cloudflare Content Signals
+  declaration in nerc.com's robots.txt. Both were captured; neither is a
+  NERC-authored developer contract. NERC's OWN standards output - the mandatory
+  Reliability Standards and the CIP series - is authoritative and enforceable but
+  is published as web pages and PDFs, with no machine-readable representation of
+  any standard.
+standards:
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document exists on any NERC host. Probed /openapi.json,
+    /swagger.json and /api-docs on www.nerc.com (404), www.nerc.net (404), and
+    eroportal.nerc.net / www.nercalerts.com (HTTP 200 soft-404 HTML error pages,
+    not specs).
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface is published. NERC Alerts are
+    distributed through a gated web application and email, not an event API.
+- id: graphql
+  conforms: false
+  evidence: https://www.nerc.com/graphql returns HTTP 404.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    E-ISAC issuer https://www.eisac.com advertises authorization, token,
+    introspection (RFC 7662) and revocation (RFC 7009) endpoints with
+    client_secret_post, client_secret_basic and private_key_jwt (RFC 7523) client
+    authentication. Salesforce Experience Cloud platform implementation; gated to
+    E-ISAC members. Not published by NERC as a developer contract.
+  scope: eisac-only
+- id: oidc
+  conforms: true
+  evidence: >-
+    Valid OpenID Connect Discovery 1.0 document at
+    https://www.eisac.com/.well-known/openid-configuration (HTTP 200, 2,267
+    bytes), issuer https://www.eisac.com, RS256 ID tokens, 24 claims advertised.
+    Captured at well-known/nerc-eisac-openid-configuration.json.
+  scope: eisac-only
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-authorization-server returns HTTP 401 on www.eisac.com and
+    HTTP 404 on www.nerc.com. Only the OIDC-flavoured discovery path is served.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    No /.well-known/security.txt on any NERC host. www.nerc.com and www.nerc.net
+    return HTTP 404; eroportal.nerc.net and www.nercalerts.com return HTML
+    soft-404s; www.eisac.com returns HTTP 401.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    No API and no error contract. The undocumented Optimizely CMS search
+    endpoints return bare application/json result envelopes with no problem+json
+    media type.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No API versioning or deprecation policy is published.
+- id: content-signals
+  conforms: true
+  evidence: >-
+    https://www.nerc.com/robots.txt carries a Cloudflare-managed Content Signals
+    declaration - "Content-Signal: search=yes,ai-train=no,use=reference" -
+    asserted as an express reservation of rights under Article 4 of EU Directive
+    2019/790, plus explicit Disallow blocks for Amazonbot, Applebot-Extended,
+    Bytespider, CCBot, ClaudeBot, CloudflareBrowserRenderingCrawler,
+    Google-Extended, GPTBot and meta-externalagent. Captured verbatim at
+    well-known/nerc-robots.txt.
+- id: project-open-data
+  conforms: false
+  evidence: https://www.nerc.com/data.json returns HTTP 404. NERC is not a US federal
+    agency and publishes no Project Open Data catalog.
+- id: apis-json
+  conforms: false
+  evidence: https://www.nerc.com/apis.json returns HTTP 404; /.well-known/api-catalog
+    returns HTTP 404.
+- id: llms-txt
+  conforms: false
+  evidence: https://www.nerc.com/llms.txt returns HTTP 404.
+- id: rss-atom
+  conforms: false
+  evidence: >-
+    No feed is served for the newsroom - /rss, /feed and /newsroom/rss all return
+    HTTP 404. The undocumented /api/search/news JSON endpoint is the only
+    machine-readable route to NERC news.
+- id: green-button-espi
+  conforms: false
+  evidence: Structurally out of scope - NERC regulates the bulk power system, not
+    retail metering or customer data.
+- id: iec-cim-61968-61970
+  conforms: false
+  evidence: No CIM reference anywhere in NERC's published surface. GADS, TADS, DADS
+    and MIDAS use NERC-proprietary record layouts published as PDF instructions.
+- id: ieee-2030-5
+  conforms: false
+  evidence: No reference found.
+- id: openadr
+  conforms: false
+  evidence: No reference found; DADS is a mandatory reporting system, not a demand
+    response signalling protocol.
+- id: fedramp
+  conforms: unknown
+  evidence: >-
+    No FedRAMP authorization is claimed for Align, the Secure Evidence Locker,
+    CORES or the ERO Portal in any public NERC document probed. NERC is a
+    not-for-profit ERO, not a federal agency, so no federal authorization posture
+    is required or published.
+- id: soc2
+  conforms: unknown
+  evidence: No trust center, certification page or audit report is published. Probed
+    trust/security/compliance paths returned no verified hit.
+authored_standards:
+  note: >-
+    Distinct from API conformance, and the reason NERC exists. NERC AUTHORS
+    mandatory standards rather than conforming to API standards - and publishes
+    none of them machine-readably.
+  bodies_of_standards:
+  - name: NERC Reliability Standards
+    url: https://www.nerc.com/standards/reliability-standards
+    authority: FERC-approved and enforceable under Section 215 of the US Federal Power
+      Act
+    machine_readable: false
+    format: web pages and PDF
+  - name: CIP Critical Infrastructure Protection standards
+    machine_readable: false
+    format: web pages and PDF
+  - name: Rules of Procedure Section 1600 mandatory data requests (GADS, TADS, DADS,
+      MIDAS)
+    machine_readable: false
+    format: PDF reporting instructions and record layouts
+  - name: NERC Glossary of Terms Used in Reliability Standards
+    machine_readable: false
+    format: PDF; also searchable through the undocumented /api/search/terms CMS endpoint

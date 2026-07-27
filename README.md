@@ -48,7 +48,7 @@ Four real but **undocumented** JSON endpoints power nerc.com's own search UI (`/
 | Consumer data API | No — out of jurisdiction entirely. |
 | Market data open | No — aggregated PDFs, registry spreadsheets and Power BI embeds only; underlying GADS/TADS/DADS data is confidential under Rules of Procedure Section 1500. |
 | Access gate | `none-published` for developers. Industry participants register for an ERO Portal account and then request access per data store or application. |
-| Auth model | None published. Interactive account login only (ERO Portal with BotDetect CAPTCHA, E-ISAC on Salesforce Experience Cloud, EasyVista SSO for support). No OAuth2, no OIDC — `/.well-known/openid-configuration` returns 404. |
+| Auth model | None published for developers. Interactive account login only (ERO Portal with BotDetect CAPTCHA, E-ISAC on Salesforce Experience Cloud, EasyVista SSO for support). No API keys, no client-credentials grant, no mTLS. `www.nerc.com/.well-known/openid-configuration` returns 404 — but see the E-ISAC exception below. |
 
 ## Common Properties
 
@@ -71,6 +71,39 @@ Four real but **undocumented** JSON endpoints power nerc.com's own search UI (`/
 - [YouTube](https://www.youtube.com/@NERCOfficial)
 - [E-ISAC](https://www.eisac.com/) — membership-gated
 - [NERC Alerts](https://www.nercalerts.com/index.php)
+
+## The one machine-readable exception: E-ISAC
+
+Enrichment round 2 (2026-07-27) re-ran contract discovery against **every** NERC-operated host rather than `www.nerc.com` alone, and found the single anonymous, standards-based discovery document in NERC's estate:
+
+```
+https://www.eisac.com/.well-known/openid-configuration   HTTP 200, 2,267 bytes
+```
+
+The Electricity Information Sharing and Analysis Center — which NERC operates — runs on Salesforce Experience Cloud, and that platform serves a valid **OpenID Connect Discovery 1.0** document: issuer `https://www.eisac.com`, authorization / token / userinfo / introspection / revocation / registration endpoints, RS256 ID tokens, `private_key_jwt` client authentication, and 36 advertised scopes. The Salesforce version list at `/services/data` also answers anonymously.
+
+This does **not** change the finding. It is the platform's stock issuer metadata, not a NERC-authored developer contract: no NERC page references it, there is no self-serve client registration for outside developers, and every resource it protects is membership-gated (`/services/data/v62.0` → HTTP 401 `INVALID_SESSION_ID`). It is captured because it is real and anonymous, and because a future round should not have to rediscover it.
+
+Two other hosts — `eroportal.nerc.net` and `www.nercalerts.com` — return HTTP 200 on *every* probed path but serve HTML **soft-404** error pages, not documents. They are recorded as soft-404s so they are never mistaken for hits.
+
+## Artifacts
+
+| Artifact | File | Method |
+| --- | --- | --- |
+| Well-Known index | [`well-known/nerc-well-known.yml`](well-known/nerc-well-known.yml) | searched |
+| E-ISAC OIDC discovery | [`well-known/nerc-eisac-openid-configuration.json`](well-known/nerc-eisac-openid-configuration.json) | searched (verbatim) |
+| Content Signals / robots.txt | [`well-known/nerc-robots.txt`](well-known/nerc-robots.txt) | searched (verbatim) |
+| Authentication profile | [`authentication/nerc-authentication.yml`](authentication/nerc-authentication.yml) | searched |
+| OAuth scopes | [`scopes/nerc-scopes.yml`](scopes/nerc-scopes.yml) | searched |
+| Conformance | [`conformance/nerc-conformance.yml`](conformance/nerc-conformance.yml) | derived |
+| Domain security | [`security/nerc-domain-security.yml`](security/nerc-domain-security.yml) | probed |
+| llms.txt | [`llms/nerc-llms.txt`](llms/nerc-llms.txt) | generated |
+
+No `openapi/`, `asyncapi/`, `mcp/`, `packages/`, `cli/`, `sandbox/`, `changelog/`, `errors/`, `skills/` or `data-model/` artifacts exist here, and none were manufactured. There is no contract to derive them from.
+
+## AI and agent consent
+
+`nerc.com/robots.txt` carries a Cloudflare-managed **Content Signals** declaration — `search=yes, ai-train=no, use=reference` — asserted as an express reservation of rights under Article 4 of EU Directive 2019/790, with explicit `Disallow` blocks for GPTBot, ClaudeBot, Google-Extended, CCBot, Amazonbot, Applebot-Extended, Bytespider and meta-externalagent. Captured verbatim; honour it.
 
 ## Maintainers
 

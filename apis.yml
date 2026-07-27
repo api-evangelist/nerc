@@ -101,6 +101,45 @@ common:
 - type: Website
   url: https://www.nercalerts.com/index.php
   name: NERC Alerts system
+- type: Roadmap
+  url: https://www.nerc.com/standards/reliability-standards-under-development
+  name: Reliability Standards Under Development - the forward work plan for NERC's
+    standards, backed by the multi-year Reliability Standards Development Plan (2026-2028
+    edition posted August 2025). A standards roadmap, not an API roadmap.
+- type: WellKnown
+  url: well-known/nerc-well-known.yml
+  name: Discovery-surface index across every NERC-operated host. Only real hit is
+    the E-ISAC OpenID Connect discovery document; www.nerc.com serves no /.well-known
+    document at all.
+- type: OpenIDConnect
+  url: well-known/nerc-eisac-openid-configuration.json
+  name: E-ISAC OpenID Connect discovery document (https://www.eisac.com/.well-known/openid-configuration),
+    captured verbatim. Salesforce Experience Cloud issuer metadata; protected resources
+    are membership-gated.
+- type: ContentSignal
+  url: well-known/nerc-robots.txt
+  name: 'Cloudflare-managed Content Signals declaration captured verbatim: search=yes,
+    ai-train=no, use=reference, with explicit Disallow blocks for GPTBot, ClaudeBot,
+    Google-Extended, CCBot, Amazonbot, Applebot-Extended, Bytespider and meta-externalagent.'
+- type: Authentication
+  url: authentication/nerc-authentication.yml
+  name: Probed authentication profile. No API keys, no developer credentials, no machine-to-machine
+    grant anywhere; interactive login only, plus the E-ISAC OAuth2/OIDC issuer.
+- type: OAuthScopes
+  url: scopes/nerc-scopes.yml
+  name: The 36 OAuth scopes advertised by the E-ISAC issuer (Salesforce platform scope
+    set). NERC publishes no scope reference of its own.
+- type: Conformance
+  url: conformance/nerc-conformance.yml
+  name: Standards conformance with evidence - OIDC discovery and Content Signals conform;
+    OpenAPI, AsyncAPI, GraphQL, security.txt, RFC 9457, data.json, apis.json and llms.txt
+    do not exist.
+- type: DomainSecurity
+  url: security/nerc-domain-security.yml
+  name: TLS/HSTS/DNSSEC/CAA/SPF/DMARC probe results for nerc.com, nerc.net and eisac.com.
+- type: LLMsTxt
+  url: llms/nerc-llms.txt
+  name: Generated llms.txt - NERC publishes none (/llms.txt returns HTTP 404).
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

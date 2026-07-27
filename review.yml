@@ -312,13 +312,46 @@ mandateAndAccess:
 
     login; the support desk redirects to EasyVista SSO
 
-    (hubzone-prod-us-east.easyvista.com IdP). No OAuth2, no OpenID Connect, no
+    (hubzone-prod-us-east.easyvista.com IdP). No mTLS, no client certificates,
 
-    mTLS, no client certificates, no accreditation scheme for data recipients.
+    no accreditation scheme for data recipients.
 
     https://www.nerc.com/.well-known/openid-configuration returned HTTP 404 —
 
-    no OIDC discovery document is served.
+    no OIDC discovery document is served on NERC''s own corporate host.
+
+
+    AMENDED 2026-07-27 (enrichment round 2): one standards-based auth surface
+
+    DOES exist in NERC''s estate, and the first round missed it by probing only
+
+    www.nerc.com. https://www.eisac.com/.well-known/openid-configuration
+
+    returns HTTP 200 with a valid OpenID Connect Discovery 1.0 document (2,267
+
+    bytes) — issuer https://www.eisac.com, authorization/token/userinfo/
+
+    introspection/revocation/registration endpoints, RS256 ID tokens,
+
+    private_key_jwt client authentication and 36 advertised scopes. It is the
+
+    stock Salesforce Experience Cloud issuer metadata behind the E-ISAC portal,
+
+    not a NERC-authored developer contract: no NERC page references it, there is
+
+    no self-serve client registration for outside developers, and every
+
+    protected resource is membership-gated
+
+    (https://www.eisac.com/services/data/v62.0 → HTTP 401 INVALID_SESSION_ID),
+
+    though the Salesforce version list at /services/data answers anonymously
+
+    with HTTP 200. Captured verbatim at
+
+    well-known/nerc-eisac-openid-configuration.json and profiled in
+
+    authentication/nerc-authentication.yml + scopes/nerc-scopes.yml.
 
     '
 probes:
@@ -537,7 +570,120 @@ undocumentedEndpoints:
     misrepresent NERC''s posture.
 
     '
-artifacts: []
+enrichmentRounds:
+- date: '2026-07-27'
+  round: 2
+  summary: >-
+    Contract discovery re-run against every NERC-operated host rather than
+    www.nerc.com alone. Confirmed the round-1 finding — still no OpenAPI, no
+    GraphQL, no AsyncAPI, no MCP server, no SDK, no developer portal — and
+    re-verified the four undocumented Optimizely CMS search endpoints live
+    (all HTTP 200; /api/search?q=API still returns totalMatching 0). One
+    material correction: the E-ISAC host serves a real, anonymous OpenID
+    Connect discovery document. Two hosts (eroportal.nerc.net,
+    www.nercalerts.com) answer HTTP 200 on every probed path but return HTML
+    soft-404 error pages, not documents — recorded as soft-404 so a future
+    round does not mistake them for hits.
+  probes:
+  - url: https://www.eisac.com/.well-known/openid-configuration
+    status: 200
+    note: >-
+      Valid OIDC Discovery 1.0 document, 2,267 bytes. THE round-2 find. Issuer
+      https://www.eisac.com; Salesforce Experience Cloud platform metadata;
+      36 scopes advertised. Saved verbatim to
+      well-known/nerc-eisac-openid-configuration.json.
+  - url: https://www.eisac.com/id/keys
+    status: 200
+    note: JWKS referenced by jwks_uri. Not saved — keys rotate.
+  - url: https://www.eisac.com/services/data
+    status: 200
+    note: >-
+      Salesforce REST API version list, anonymous, from v31.0 forward. Platform
+      plumbing, not a NERC data product.
+  - url: https://www.eisac.com/services/data/v62.0
+    status: 401
+    note: '{"message":"Authorization required","errorCode":"INVALID_SESSION_ID"} —
+      the actual API surface is membership-gated, as expected for an ISAC.'
+  - url: https://www.eisac.com/services/oauth2/token
+    status: 400
+    note: unsupported_grant_type on an empty POST — the token endpoint is live.
+  - url: https://www.eisac.com/.well-known/security.txt
+    status: 401
+  - url: https://www.eisac.com/.well-known/oauth-authorization-server
+    status: 401
+  - url: https://eroportal.nerc.net/.well-known/security.txt
+    status: 200
+    note: SOFT 404 — Adxstudio "Customer Portal" HTML error page. Same for
+      /.well-known/openid-configuration, /openapi.json, /swagger.json, /llms.txt.
+  - url: https://www.nercalerts.com/.well-known/security.txt
+    status: 200
+    note: SOFT 404 — Certrec-hosted HTML shell. Same for every other probed path.
+  - url: https://www.nerc.net/.well-known/security.txt
+    status: 404
+  - url: https://www.nerc.com/.well-known/oauth-protected-resource
+    status: 404
+  - url: https://www.nerc.com/api/search?q=API
+    status: 200
+    note: >-
+      Re-verified 2026-07-27 — the response body is still {"totalMatching": 0}.
+      The headline probe holds.
+  - url: https://www.nerc.com/api/search/terms
+    status: 200
+    note: Re-verified live, 422,485 bytes.
+  - url: https://www.nerc.com/api/search/events
+    status: 200
+    note: Re-verified live, 359,591 bytes.
+  - url: https://www.nerc.com/api/search/news
+    status: 200
+    note: Re-verified live, 6,832 bytes.
+  - url: https://www.nerc.com/who-we-are/contact-us
+    status: 200
+  - url: https://www.nerc.com/who-we-are/careers
+    status: 200
+  - url: https://www.nerc.com/standards/reliability-standards-under-development
+    status: 200
+    note: >-
+      Standards work plan. The 2026-2028 Reliability Standards Development Plan
+      (posted August 2025) is published as PDF under /globalassets/standards/rsdp/.
+      Wired as type Roadmap — a standards roadmap, not an API roadmap.
+  - url: https://www.nerc.com/our-work/guidelines/security-guidelines
+    status: 200
+    note: RSTC security guidelines. Guidance for registered entities, not a
+      vulnerability disclosure policy for NERC's own systems.
+  - url: https://www.nerc.com/security
+    status: 404
+  - url: https://www.nerc.com/responsible-disclosure
+    status: 404
+  - url: https://www.nerc.com/vulnerability-disclosure
+    status: 404
+  - url: https://www.nerc.com/globalassets/nerc-logo.png
+    status: 200
+    note: 1,688-byte PNG. apis.yml image verified.
+artifacts:
+- type: WellKnown
+  file: well-known/nerc-well-known.yml
+  method: searched
+- type: OpenIDConnect
+  file: well-known/nerc-eisac-openid-configuration.json
+  method: searched
+- type: ContentSignal
+  file: well-known/nerc-robots.txt
+  method: searched
+- type: Authentication
+  file: authentication/nerc-authentication.yml
+  method: searched
+- type: OAuthScopes
+  file: scopes/nerc-scopes.yml
+  method: searched
+- type: Conformance
+  file: conformance/nerc-conformance.yml
+  method: derived
+- type: DomainSecurity
+  file: security/nerc-domain-security.yml
+  method: probed
+- type: LLMsTxt
+  file: llms/nerc-llms.txt
+  method: generated
 notFound:
 - Developer portal of any kind
 - API documentation or reference

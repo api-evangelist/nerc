@@ -1,0 +1,116 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  Live probes of NERC-operated hosts on 2026-07-27, plus the E-ISAC OpenID
+  Connect discovery document at
+  https://www.eisac.com/.well-known/openid-configuration
+note: >-
+  NERC publishes no developer API, so there is no OpenAPI securitySchemes block
+  to derive from. This profile is probed rather than derived, and it records what
+  a client actually meets on each NERC-operated surface. The headline: NERC's own
+  corporate estate has no programmatic authentication at all, while the one
+  standards-based auth surface in the whole estate belongs to E-ISAC and is
+  Salesforce Experience Cloud's stock OAuth2/OIDC issuer, gated to vetted
+  members.
+summary:
+  types:
+  - none
+  - oauth2
+  - openIdConnect
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  - implicit
+  developer_signup: false
+  api_keys_issued: false
+surfaces:
+- name: www.nerc.com public web and assets
+  host: https://www.nerc.com
+  auth: none
+  note: >-
+    Reliability Standards, reliability assessments, GADS/TADS statistical
+    brochures, the Compliance Registry Matrix XLSX and every /globalassets/*
+    document download anonymously over plain HTTPS GET. No key, no header, no
+    cookie.
+- name: Optimizely CMS site-search endpoints (undocumented)
+  host: https://www.nerc.com
+  paths:
+  - /api/search
+  - /api/search/events
+  - /api/search/news
+  - /api/search/terms
+  auth: none
+  documented: false
+  note: >-
+    Internal XHR routes of the Optimizely (Episerver) CMS that renders
+    nerc.com's own search UI, discovered from the site's JavaScript bundle and
+    re-verified live on 2026-07-27 (all HTTP 200). Entirely anonymous - no
+    Authorization header, no API key, no required cookie; the server sets
+    EPiStateMarker and Azure ARRAffinity cookies but does not enforce them.
+    Deliberately NOT listed in apis.yml apis[]: unpublished, unsupported, and
+    covered by no terms of programmatic use.
+- name: ERO Portal
+  host: https://eroportal.nerc.net
+  auth: interactive-login
+  scheme: username/password with security questions and a BotDetect CAPTCHA
+    (/BotDetectCaptcha.ashx observed)
+  standards: []
+  note: >-
+    Adxstudio/Dynamics-era customer portal. Account registration, then a separate
+    access request per data store or application, approved by NERC. No OAuth2, no
+    OIDC discovery document (probed paths return the portal's soft-404 HTML error
+    page, not JSON), no client credentials, no machine-to-machine path.
+- name: E-ISAC portal (Salesforce Experience Cloud)
+  host: https://www.eisac.com
+  auth: oauth2 + openIdConnect
+  discovery: https://www.eisac.com/.well-known/openid-configuration
+  discovery_status: 200
+  captured: well-known/nerc-eisac-openid-configuration.json
+  issuer: https://www.eisac.com
+  endpoints:
+    authorization: https://www.eisac.com/services/oauth2/authorize
+    token: https://www.eisac.com/services/oauth2/token
+    userinfo: https://www.eisac.com/services/oauth2/userinfo
+    introspection: https://www.eisac.com/services/oauth2/introspect
+    revocation: https://www.eisac.com/services/oauth2/revoke
+    registration: https://www.eisac.com/services/oauth2/register
+    end_session: https://www.eisac.com/services/auth/idp/oidc/logout
+    jwks: https://www.eisac.com/id/keys
+  response_types_supported:
+  - code
+  - token
+  - token id_token
+  token_endpoint_auth_methods_supported:
+  - client_secret_post
+  - client_secret_basic
+  - private_key_jwt
+  id_token_signing_alg_values_supported:
+  - RS256
+  subject_types_supported:
+  - public
+  scopes_supported_count: 36
+  scopes: scopes/nerc-scopes.yml
+  gated: true
+  note: >-
+    Real, anonymous, standards-compliant OIDC discovery - but it is Salesforce
+    Experience Cloud's stock issuer metadata, not a NERC-authored developer
+    contract. No NERC documentation references it, there is no client-registration
+    path for outside developers, and every protected resource behind it is
+    membership-gated: https://www.eisac.com/services/data/v62.0 returns HTTP 401
+    INVALID_SESSION_ID. The anonymous Salesforce version list at /services/data
+    returns HTTP 200. E-ISAC membership is a separate organizational eligibility
+    process, not a developer signup.
+- name: Support desk
+  host: https://support.nerc.net
+  auth: sso
+  scheme: EasyVista SSO (hubzone-prod-us-east.easyvista.com IdP)
+  note: >-
+    Unauthenticated request returns HTTP 503 with "No active session. Please
+    start a new authentication flow." Industry support desk, not developer
+    support.
+not_found:
+- API keys or developer credentials of any kind
+- Client-credentials / machine-to-machine grant published for any NERC system
+- mTLS or client certificates
+- OIDC discovery on www.nerc.com (/.well-known/openid-configuration -> HTTP 404)
+- Accreditation scheme for programmatic data recipients

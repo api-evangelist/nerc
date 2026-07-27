@@ -1,0 +1,76 @@
+generated: '2026-07-27'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.nerc.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 25 22:28:40 2026 GMT
+  hsts: true
+  hsts_max_age: 15552000
+- host: eroportal.nerc.net
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 16 03:37:32 2026 GMT
+  hsts: true
+  hsts_max_age: 3153600
+- host: www.eisac.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Mar 14 23:59:59 2027 GMT
+  hsts: true
+  hsts_max_age: 63072000
+domains:
+- domain: nerc.com
+  dnssec: false
+  caa:
+  - 0 issue "certainly.com"
+  - 0 issue "comodoca.com"
+  - 0 issue "digicert.com; cansignhttpexchanges=yes"
+  - 0 issue "letsencrypt.org"
+  - 0 issue "pki.goog; cansignhttpexchanges=yes"
+  - 0 issue "ssl.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine
+- domain: nerc.net
+  dnssec: false
+  caa:
+  - 0 issuewild "letsencrypt.org"
+  - 0 issuewild "pki.goog; cansignhttpexchanges=yes"
+  - 0 issuewild "ssl.com"
+  - 0 issue "comodoca.com"
+  - 0 issue "digicert.com; cansignhttpexchanges=yes"
+  - 0 issue "letsencrypt.org"
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+- domain: eisac.com
+  dnssec: false
+  caa:
+  - 0 issue "comodoca.com"
+  - 0 issue "digicert.com; cansignhttpexchanges=yes"
+  - 0 issue "letsencrypt.org"
+  - 0 issue "pki.goog; cansignhttpexchanges=yes"
+  - 0 issue "ssl.com"
+  - 0 issuewild "comodoca.com"
+  - 0 issuewild "digicert.com; cansignhttpexchanges=yes"
+  - 0 issuewild "letsencrypt.org"
+  - 0 issuewild "pki.goog; cansignhttpexchanges=yes"
+  - 0 issuewild "ssl.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine
+  note: >-
+    E-ISAC domain, added by hand on 2026-07-27 (the automated probe walks the
+    apis.yml + OpenAPI hosts and had captured the www.eisac.com host but not the
+    registrable domain). SPF includes _spf.salesforce.com, cust-spf.exacttarget.com,
+    mmsend.com and spf.protection.outlook.com with -all; DMARC p=quarantine
+    pct=100 with rua/ruf reporting.
+findings:
+  dnssec: Not enabled on nerc.com, nerc.net or eisac.com.
+  hsts: Enabled on all three probed hosts; www.eisac.com carries the longest max-age
+    (63072000, two years).
+  caa: All three domains publish CAA issue records, constraining certificate issuance.
+  email: SPF and DMARC published on all three domains; nerc.com and eisac.com enforce
+    p=quarantine, nerc.net is p=none (monitor only).

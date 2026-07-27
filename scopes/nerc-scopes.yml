@@ -1,0 +1,114 @@
+generated: '2026-07-27'
+method: searched
+source: https://www.eisac.com/.well-known/openid-configuration
+captured: well-known/nerc-eisac-openid-configuration.json
+docs: null
+note: >-
+  NERC itself publishes no OAuth surface and no scope reference - there is no
+  developer portal, no API documentation and no scopes page anywhere on
+  nerc.com. The only OAuth2 authorization server in NERC's estate is the one
+  fronting the Electricity Information Sharing and Analysis Center (E-ISAC),
+  which NERC operates on Salesforce Experience Cloud. The scope list below is
+  transcribed VERBATIM from that issuer's anonymous OIDC discovery document; it
+  is the Salesforce platform's stock scope set advertised by the E-ISAC issuer,
+  NOT a NERC-defined or NERC-documented permission model. No NERC page documents
+  any of these scopes, there is no self-serve client registration for outside
+  developers, and every resource they would authorize is membership-gated
+  (https://www.eisac.com/services/data/v62.0 -> HTTP 401 INVALID_SESSION_ID).
+  Descriptions are supplied only for the scopes defined by OpenID Connect Core
+  1.0 / RFC 6749; platform scopes are left undescribed rather than glossed.
+schemes:
+- name: E-ISAC OpenID Connect
+  issuer: https://www.eisac.com
+  source: https://www.eisac.com/.well-known/openid-configuration
+  platform: Salesforce Experience Cloud
+  gated: true
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://www.eisac.com/services/oauth2/authorize
+    tokenUrl: https://www.eisac.com/services/oauth2/token
+  - flow: implicit
+    authorizationUrl: https://www.eisac.com/services/oauth2/authorize
+scope_count: 36
+scopes:
+- scope: openid
+  description: Request an ID Token (OpenID Connect Core 1.0).
+  standard: openid-connect
+- scope: profile
+  description: Access to the end-user's default profile claims (OpenID Connect Core
+    1.0).
+  standard: openid-connect
+- scope: email
+  description: Access to the email and email_verified claims (OpenID Connect Core 1.0).
+  standard: openid-connect
+- scope: address
+  description: Access to the address claim (OpenID Connect Core 1.0).
+  standard: openid-connect
+- scope: phone
+  description: Access to the phone_number and phone_number_verified claims (OpenID
+    Connect Core 1.0).
+  standard: openid-connect
+- scope: offline_access
+  description: Request a refresh token for access when the user is not present (OpenID
+    Connect Core 1.0).
+  standard: openid-connect
+- scope: refresh_token
+  standard: salesforce-platform
+- scope: id
+  standard: salesforce-platform
+- scope: api
+  standard: salesforce-platform
+- scope: web
+  standard: salesforce-platform
+- scope: full
+  standard: salesforce-platform
+- scope: content
+  standard: salesforce-platform
+- scope: lightning
+  standard: salesforce-platform
+- scope: visualforce
+  standard: salesforce-platform
+- scope: custom_permissions
+  standard: salesforce-platform
+- scope: chatter_api
+  standard: salesforce-platform
+- scope: chatbot_api
+  standard: salesforce-platform
+- scope: interaction_api
+  standard: salesforce-platform
+- scope: wave_api
+  standard: salesforce-platform
+- scope: eclair_api
+  standard: salesforce-platform
+- scope: pardot_api
+  standard: salesforce-platform
+- scope: scrt_api
+  standard: salesforce-platform
+- scope: sfap_api
+  standard: salesforce-platform
+- scope: einstein_gpt_api
+  standard: salesforce-platform
+- scope: mcp_api
+  standard: salesforce-platform
+- scope: user_registration_api
+  standard: salesforce-platform
+- scope: pwdless_login_api
+  standard: salesforce-platform
+- scope: forgot_password
+  standard: salesforce-platform
+- scope: data_cloud_user_claims
+  standard: salesforce-platform
+- scope: cdp_api
+  standard: salesforce-platform
+- scope: cdp_ingest_api
+  standard: salesforce-platform
+- scope: cdp_query_api
+  standard: salesforce-platform
+- scope: cdp_profile_api
+  standard: salesforce-platform
+- scope: cdp_segment_api
+  standard: salesforce-platform
+- scope: cdp_identityresolution_api
+  standard: salesforce-platform
+- scope: cdp_calculated_insight_api
+  standard: salesforce-platform
