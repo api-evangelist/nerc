@@ -1,0 +1,604 @@
+aid: nerc
+name: NERC
+review:
+  question: Does NERC publish a real, documented, publicly accessible API — and does
+    any energy data mandate apply to or originate from it?
+  answer: false
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  homeMarket: United States
+  tier: regulator
+findings:
+  summary: 'NERC publishes no public API of any kind. There is no developer portal,
+
+    no API documentation, no OpenAPI or other machine-readable contract, no SDK,
+
+    no public GitHub presence with code, no RSS feed, no data.json, no apis.json
+
+    and no .well-known catalog. developer.nerc.com, developers.nerc.com,
+
+    api.nerc.com, docs.nerc.com and data.nerc.com do not resolve. A site search
+
+    of nerc.com for the exact term "API" on 2026-07-27 returned totalMatching: 0
+
+    across 3,361 indexed pages and thousands of documents.
+
+
+    Three real JSON endpoints DO answer anonymously — /api/search,
+
+    /api/search/events, /api/search/news and /api/search/terms — but these are
+
+    the internal, undocumented XHR endpoints of the Optimizely CMS that powers
+
+    nerc.com''s own search UI, discovered by reading the site''s JavaScript
+
+    bundle. They are not published, not documented, carry no terms of service or
+
+    rate limit statement, and are not offered as a product. They are recorded
+
+    below as probe evidence and deliberately NOT listed as APIs in apis.yml.
+
+
+    NERC is a MANDATOR of energy data rather than a publisher of it. Its
+
+    obligation runs upward — registered entities must submit performance data to
+
+    NERC — and the submitted data is explicitly confidential. That is the whole
+
+    finding: the top regulator of the North American bulk power system operates
+
+    entirely on portals, spreadsheets, PDFs and Power BI embeds.
+
+    '
+mandateAndAccess:
+  homeMarket: United States (with jurisdiction across all of Canada and part of Baja
+    California, Mexico)
+  mandateRegime: other
+  mandateRegimeVerbatim: 'NO consumer energy data mandate applies to NERC. There is
+
+    no Green Button obligation, no ESPI reference, no Consumer Data Right, no
+
+    Ontario-style regulation, and no smart-meter infrastructure mandate anywhere
+
+    in NERC''s surface — retail metering and customer data are state public
+
+    utility commission jurisdiction and sit outside the ERO''s statutory reach
+
+    entirely.
+
+
+    The mandate regime NERC DOES operate is a different animal, and NERC issues
+
+    it rather than receives it. Under Section 215 of the Federal Power Act, added
+
+    by the Energy Policy Act of 2005, FERC certified NERC as the Electric
+
+    Reliability Organization on 20 July 2006. NERC develops and enforces
+
+    mandatory, enforceable Reliability Standards (including the CIP critical
+
+    infrastructure protection standards) on the registered owners, operators and
+
+    users of the bulk power system. Alongside the standards, NERC issues
+
+    MANDATORY DATA REPORTING obligations under Section 1600 of its Rules of
+
+    Procedure — the Generating Availability Data System (GADS), the Transmission
+
+    Availability Data System (TADS), the Demand Response Availability Data System
+
+    (DADS) and MIDAS.
+
+
+    This is a data-submission mandate, not a data-sharing mandate. Verbatim from
+
+    NERC''s own GADS Section 1600 data request (harvested 2026-07-27,
+
+    https://www.nerc.com/globalassets/gads_mandatory_reporting_section_1600_-data_request-03-14-2011.pdf,
+
+    HTTP 200): "Mandatory data collection will begin from January 1, 2012 to
+
+    March 31, 2012 and will be due to NERC no later than April 30, 2012" and
+
+    "Like these existing systems, GADS data will continue to be confidential
+
+    under NERC''s Rules of Procedure, Section 1500: Confidential Information."
+
+
+    Classified as `other` because a real, live, enforced data obligation exists
+
+    and defines this organization, but it is none of the consumer-data regimes in
+
+    the enumeration.
+
+    '
+  mandateStatus: live-implemented
+  mandateStatusEvidence: 'The mandate NERC issues is verifiably live and
+
+    implemented, and a public register of the parties subject to it exists. This
+
+    was probed, not assumed:
+
+
+    - PUBLIC REGISTER OF COMPLIANT PARTIES — the NERC Compliance Registry Matrix
+      downloads anonymously with no account at
+      https://www.nerc.com/globalassets/programs/registration/compliance-registry-files/nerc_compliance_registry_matrix_excel.xlsx
+      (HTTP 200, 437,389 bytes,
+      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet). The
+      companion NERC Compliance Registry Change Activity file also returns
+      HTTP 200 (23,171 bytes). This is a real register entry list, not a claim.
+
+    - COMMENCEMENT — mandatory conventional GADS reporting commenced 1 January
+      2012 (units 50 MW and larger), per the Section 1600 data request PDF above
+      (HTTP 200, 397,193 bytes). TADS Section 1600 remains live and was revised
+      in November 2025 —
+      https://www.nerc.com/globalassets/programs/rapa/section-1600-data-requests/tads_section_1600_data_request_2025_november.pdf
+      returned HTTP 200 (932,699 bytes).
+
+    - ENFORCEMENT MACHINERY — the CMEP platform Align and the Secure Evidence
+      Locker are live; the Align 2.0 Fact Sheet dated June 2026 returned
+      HTTP 200 (220,072 bytes) and describes Align and SEL as "essential tools
+      used by NERC, Regional Entities, and registered entities in the ERO
+      Enterprise Compliance Monitoring and Enforcement Program (CMEP)". That
+      fact sheet contains no occurrence of the word "API".
+
+    - ACCESS SYSTEM — https://eroportal.nerc.net/ returned HTTP 200 and states
+      "Access to Datastores and Applications" and "Request Access", i.e. a live
+      registration and access-approval gate, environment banner "PRODUCTION".
+
+
+    CRITICAL QUALIFICATION: what is live-implemented here is an obligation to
+
+    SUBMIT data to NERC through gated portals and file uploads. Nothing in this
+
+    mandate obliges NERC or anyone else to publish data through an API, and no
+
+    API implements any part of it.
+
+    '
+  consumerDataApi: false
+  consumerDataEvidence: 'Absent, and structurally impossible. NERC regulates the
+
+    BULK power system — generation, transmission and system operations — not
+
+    retail service. There is no customer, no meter-level usage, no billing, no
+
+    consent flow, no accredited-recipient register and no Green Button or ESPI
+
+    reference anywhere. Probed: site search of nerc.com for "API" returned
+
+    totalMatching 0; no consumer, retail, customer-usage or Green Button data
+
+    product appears in the sitemap''s 3,361 URLs, whose program sections are
+
+    Standards, Compliance, Enforcement, Registration, Reliability Assessment &
+
+    Performance Analysis, Event Analysis, Bulk Power System Awareness,
+
+    Organization Certification, System Operator Certification and E-ISAC.
+
+    '
+  marketDataOpen: false
+  marketDataEvidence: 'NERC publishes DOCUMENTS openly; it does not publish OPEN
+
+    DATA. Anonymous, no-account access exists to reliability assessments, the
+
+    State of Reliability report, GADS Generating Unit Statistical Brochures and
+
+    Cause Code Reports, Compliance Registry spreadsheets, and Power BI dashboards
+
+    (the TADS Element Inventory, Sustained Outages by Cause Code, Momentary
+
+    Outages by Cause Code and Momentary and Sustained Outages by Month dashboards
+
+    at
+    https://www.nerc.com/programs/reliability-assessment--performance-analysis/transmission-availability-data-system/dashboards/*
+    all return HTTP 200 and render client-side; the site Content-Security-Policy
+
+    frame-src explicitly allows https://app.powerbi.com/, confirming Power BI
+
+    embeds rather than a data service).
+
+
+    The underlying data is NOT open. NERC''s own Section 1600 data request states
+
+    that GADS data "will continue to be confidential under NERC''s Rules of
+
+    Procedure, Section 1500: Confidential Information", and says the same of TADS
+
+    and DADS. Only aggregated statistics reach the public, as PDF. NERC operates
+
+    no open data portal, no dataset API, no bulk data service and no data.json
+
+    (https://www.nerc.com/data.json returned HTTP 404). Real-time situational
+
+    awareness data (Bulk Power System Awareness) and E-ISAC threat intelligence
+
+    are not public at all.
+
+
+    Marked false: aggregated PDFs, registry spreadsheets and embedded dashboards
+
+    are publication, not open data, and none of it is machine-addressable.
+
+    '
+  consumerVsMarketDataSplit: 'Neither side is open at NERC, which makes it the
+
+    inverse of its sibling regulators. FERC — the agency that certified NERC —
+
+    runs a documented, self-serve, OpenAPI-described open data API at
+
+    api.data.ferc.gov. EIA publishes one of the best open government APIs
+
+    anywhere. The seven ISOs and RTOs that NERC registers publish genuine market
+
+    data feeds. NERC, sitting above all of them, publishes nothing programmatic
+
+    in either direction: consumer data is out of its jurisdiction, and the market
+
+    and system data it does hold is confidential by rule and released only as
+
+    aggregated documents. The split is not open-versus-closed, it is
+
+    closed-versus-out-of-scope.
+
+    '
+  dataStandard: 'no standard reference found. No Green Button / ESPI, no NAESB REQ
+
+    Book 21, no CDR Consumer Data Standards, no IEC CIM 61968/61970, no IEEE
+
+    2030.5, no OpenADR, no OCPP/OCPI, no XBRL. What NERC does define are its own
+
+    proprietary reporting record layouts and instructions — the Conventional,
+
+    Wind and Solar GADS Data Reporting Instructions, the TADS/DADS/MIDAS record
+
+    formats — and the NERC Glossary of Terms used in the Reliability Standards.
+
+    These are human-readable submission specifications delivered as PDF, not
+
+    machine-readable API contracts.
+
+    '
+  accessGate: none-published
+  accessGateSteps: 'There is nothing for a developer to sign up for. No developer
+
+    portal, no API key form, no sandbox, no terms of service for programmatic
+
+    access, no rate limit policy, no support channel for developers. A developer
+
+    who wants NERC data has exactly three options, all verified: (1) download the
+
+    public PDFs and XLSX files anonymously from www.nerc.com/globalassets/*, with
+
+    no key and no registration; (2) scrape the Power BI dashboards; (3) qualify
+
+    as an industry participant. Option 3 is a real gate but not a developer one —
+
+    it requires registering for an ERO Portal account at
+
+    https://eroportal.nerc.net/ (HTTP 200), then submitting a separate access
+
+    request per data store or application, approved by NERC, before Align, the
+
+    Secure Evidence Locker, CORES, the GADS/TADS data stores or the extranet
+
+    sites become reachable. E-ISAC membership is a further, separate
+
+    organizational eligibility process on a Salesforce Experience Cloud portal at
+
+    https://www.eisac.com/ (HTTP 200, redirects to /s/). The undocumented
+
+    /api/search* JSON endpoints require nothing at all — no key, no header, no
+
+    cookie — but are not published or supported.
+
+    '
+  authModel: 'None published for any programmatic surface, because no programmatic
+
+    surface is published. The undocumented CMS search endpoints are entirely
+
+    anonymous — plain HTTPS GET with no Authorization header, no API key, no
+
+    cookie requirement; the server sets EPiStateMarker and Azure ARRAffinity
+
+    cookies but does not require them. Gated systems use interactive account
+
+    login only: the ERO Portal is an Adxstudio/Dynamics-era customer portal with
+
+    username/password registration, security questions and a BotDetect CAPTCHA
+
+    (/BotDetectCaptcha.ashx observed); E-ISAC is Salesforce Experience Cloud
+
+    login; the support desk redirects to EasyVista SSO
+
+    (hubzone-prod-us-east.easyvista.com IdP). No OAuth2, no OpenID Connect, no
+
+    mTLS, no client certificates, no accreditation scheme for data recipients.
+
+    https://www.nerc.com/.well-known/openid-configuration returned HTTP 404 —
+
+    no OIDC discovery document is served.
+
+    '
+probes:
+- url: https://www.nerc.com/
+  status: 200
+  note: Optimizely (Episerver) CMS on Azure App Service behind Cloudflare. Content
+    renders client-side from /dist/index-fbe85a3a.js.
+- url: https://nerc.com/
+  status: 200
+- url: https://developer.nerc.com/
+  status: 000
+  note: Host does not resolve.
+- url: https://developers.nerc.com/
+  status: 000
+  note: Host does not resolve.
+- url: https://api.nerc.com/
+  status: 000
+  note: Host does not resolve.
+- url: https://docs.nerc.com/
+  status: 000
+  note: Host does not resolve.
+- url: https://data.nerc.com/
+  status: 000
+  note: Host does not resolve.
+- url: https://www.nerc.com/api
+  status: 404
+- url: https://www.nerc.com/developers
+  status: 404
+- url: https://www.nerc.com/data
+  status: 404
+- url: https://www.nerc.com/docs
+  status: 404
+- url: https://www.nerc.com/openapi.json
+  status: 404
+- url: https://www.nerc.com/swagger.json
+  status: 404
+- url: https://www.nerc.com/api-docs
+  status: 404
+- url: https://www.nerc.com/graphql
+  status: 404
+- url: https://www.nerc.com/data.json
+  status: 404
+  note: No Project Open Data catalog.
+- url: https://www.nerc.com/apis.json
+  status: 404
+- url: https://www.nerc.com/.well-known/api-catalog
+  status: 404
+- url: https://www.nerc.com/.well-known/openid-configuration
+  status: 404
+- url: https://www.nerc.com/.well-known/security.txt
+  status: 404
+- url: https://www.nerc.com/.well-known/ai-plugin.json
+  status: 404
+- url: https://www.nerc.com/llms.txt
+  status: 404
+- url: https://www.nerc.com/rss
+  status: 404
+- url: https://www.nerc.com/feed
+  status: 404
+- url: https://www.nerc.com/newsroom/rss
+  status: 404
+  note: No feed of any kind is served for the newsroom.
+- url: https://www.nerc.com/robots.txt
+  status: 200
+  note: 'Cloudflare-managed content signals block AI training — "Content-Signal:
+
+    search=yes,ai-train=no,use=reference" — and Disallow blocks are set for
+
+    Amazonbot, Applebot-Extended, Bytespider and others. Allow: / for generic
+
+    agents.
+
+    '
+- url: https://www.nerc.com/sitemap.xml
+  status: 200
+  note: 718,488 bytes, 3,361 URLs. No developer, data or API section exists in it.
+- url: https://www.nerc.com/api/search?q=API
+  status: 200
+  note: 'JSON, "totalMatching": 0. THE headline probe — NERC''s own search index
+
+    contains zero documents matching the term API.
+
+    '
+- url: https://www.nerc.com/api/search?q=reliability
+  status: 200
+  note: JSON, "totalMatching":8447, 845 pages. Undocumented Optimizely site-search
+    endpoint, fully anonymous.
+- url: https://www.nerc.com/api/search/events
+  status: 200
+  note: JSON, 355,655 bytes. Undocumented events search endpoint.
+- url: https://www.nerc.com/api/search/news
+  status: 200
+  note: JSON, "totalMatching":142. Undocumented newsroom search endpoint — the only
+    machine-readable route to NERC news, since no RSS exists.
+- url: https://www.nerc.com/api/search/terms
+  status: 200
+  note: JSON. Undocumented Glossary of Terms / standards search endpoint carrying
+    status filters such as "Subject to Enforcement".
+- url: https://www.nerc.com/dist/index-fbe85a3a.js
+  status: 200
+  note: 1,028,401-byte front-end bundle. Contains exactly four endpoint strings —
+    "/api/search", "/api/search/events", "/api/search/news", "/api/search/terms".
+    Nothing else.
+- url: https://eroportal.nerc.net/
+  status: 200
+  note: ERO Portal. Account registration, "Access to Datastores and Applications",
+    "Request Access". BotDetect CAPTCHA. Adxstudio-based. Not a developer portal.
+- url: https://www.nerc.net/
+  status: 401
+  note: Bare extranet host returns HTTP 401 unauthorized.
+- url: https://align.nerc.net/
+  status: 000
+  note: Host does not resolve publicly.
+- url: https://cores.nerc.net/
+  status: 000
+  note: Host does not resolve publicly.
+- url: https://sel.nerc.net/
+  status: 000
+  note: Host does not resolve publicly.
+- url: https://support.nerc.net/
+  status: 503
+  note: Redirects to an EasyVista SSO IdP error page — hubzone-prod-us-east.easyvista.com
+    — with "No active session. Please start a new authentication flow."
+- url: https://www.eisac.com/
+  status: 200
+  note: E-ISAC. Salesforce Experience Cloud, redirects to /s/. Membership-gated; no
+    public API.
+- url: https://portal.eisac.com/
+  status: 000
+  note: Host does not resolve.
+- url: https://www.nercalerts.com/index.php
+  status: 200
+  note: NERC Alerts system, 6,077 bytes. Web only.
+- url: https://www.nerc.com/globalassets/programs/registration/compliance-registry-files/nerc_compliance_registry_matrix_excel.xlsx
+  status: 200
+  note: 437,389 bytes XLSX. The public register of registered entities. Anonymous
+    download, no account.
+- url: https://www.nerc.com/globalassets/programs/registration/compliance-registry-files/nerc_compliance_registry_change_activity.xlsx
+  status: 200
+  note: 23,171 bytes XLSX.
+- url: https://www.nerc.com/globalassets/gads_mandatory_reporting_section_1600_-data_request-03-14-2011.pdf
+  status: 200
+  note: 397,193 bytes PDF. Source of the mandatory-reporting commencement date and
+    the Section 1500 confidentiality statement quoted above.
+- url: https://www.nerc.com/globalassets/programs/rapa/section-1600-data-requests/tads_section_1600_data_request_2025_november.pdf
+  status: 200
+  note: 932,699 bytes PDF. TADS Section 1600 revisions, November 2025 — the mandate
+    is current.
+- url: https://www.nerc.com/globalassets/applications/align-and-sel/align-2.0-fact-sheet---june--2026.pdf
+  status: 200
+  note: 220,072 bytes PDF, June 2026. Zero occurrences of "API".
+- url: https://www.nerc.com/programs/registration/compliance-registry-files
+  status: 200
+- url: https://www.nerc.com/programs/reliability-assessment--performance-analysis/generating-availability-data-system
+  status: 200
+- url: https://www.nerc.com/standards/reliability-standards
+  status: 200
+  note: 126 standards pages in the sitemap. Web and PDF only — no machine-readable
+    representation of any Reliability Standard.
+- url: https://www.nerc.com/applications/nerc-data-stores--extranet-sites
+  status: 200
+  note: Body renders client-side; the page exists to route industry users to gated
+    data stores.
+- url: https://www.nerc.com/applications/align-and-secure-evidence-locker-sel
+  status: 200
+- url: https://www.nerc.com/programs/e-isac
+  status: 200
+- url: https://www.nerc.com/programs/bulk-power-system-awareness
+  status: 200
+  note: Situational awareness program. No public real-time data product.
+- url: https://api.github.com/orgs/NERC
+  status: 200
+  note: 'The github.com/NERC organization exists but has 0 public repositories, no
+
+    name, no description and no website, created 2013-01-09. It cannot be
+
+    attributed to this NERC and is a likely homonym with the UK Natural
+
+    Environment Research Council. NOT recorded in apis.yml.
+
+    '
+undocumentedEndpoints:
+- url: https://www.nerc.com/api/search
+  method: GET
+  parameters: q (query string)
+  auth: none
+  documented: false
+  note: Optimizely CMS site search. Returns filters[], hasMorePages, totalMatching,
+    totalPages, items[] with documentResult/pageResult objects.
+- url: https://www.nerc.com/api/search/events
+  method: GET
+  auth: none
+  documented: false
+  note: Returns year, month, monthAndYearDisplay, programsAndDepartments[] filters
+    and event items.
+- url: https://www.nerc.com/api/search/news
+  method: GET
+  auth: none
+  documented: false
+  note: Returns dated newsroom items with category and allNewsTypes.
+- url: https://www.nerc.com/api/search/terms
+  method: GET
+  parameters: q
+  auth: none
+  documented: false
+  note: Returns statusFilters such as "Filed and Pending Regulatory Approval", "Subject
+    to Enforcement", "Subject to Future Enforcement".
+- disposition: 'Discovered by reading the site''s own JavaScript bundle. Real,
+
+    anonymous and repeatable, but undocumented, unpublished, unsupported and
+
+    covered by no terms of programmatic use. Deliberately NOT listed in apis.yml
+
+    apis[] — listing an internal CMS XHR route as a public API would
+
+    misrepresent NERC''s posture.
+
+    '
+artifacts: []
+notFound:
+- Developer portal of any kind
+- API documentation or reference
+- OpenAPI, Swagger, AsyncAPI, GraphQL schema or Postman collection
+- SDKs or client libraries
+- Green Button / ESPI endpoint or reference
+- Consumer or customer usage/billing API
+- Open data portal, dataset API or bulk data service
+- Machine-readable representation of any Reliability Standard
+- RSS or Atom feed
+- data.json, apis.json, .well-known/api-catalog, llms.txt, security.txt
+- OpenID Connect discovery document
+- MCP server
+- Public API status page
+- Webhooks or event/notification API
+- Public GitHub organization with code attributable to this NERC
+- Any public API for GADS, TADS, DADS, MIDAS, Align, SEL, CORES or E-ISAC
+sources:
+- url: https://www.nerc.com/
+  type: Website
+  note: Corporate site. Optimizely CMS, client-rendered.
+- url: https://eroportal.nerc.net/
+  type: Portal
+  note: The only NERC-operated portal reachable anonymously, and it is a login/registration
+    gate, not a developer portal.
+- url: https://www.nerc.com/globalassets/gads_mandatory_reporting_section_1600_-data_request-03-14-2011.pdf
+  type: Documentation
+  note: GADS Mandatory Reporting Section 1600 Data Request. Establishes the mandate
+    commencement and the confidentiality of submitted data.
+- url: https://www.nerc.com/globalassets/programs/registration/compliance-registry-files/nerc_compliance_registry_matrix_excel.xlsx
+  type: DataCatalog
+  note: Public register of registered entities, downloadable anonymously.
+- url: https://www.nerc.com/globalassets/applications/align-and-sel/align-2.0-fact-sheet---june--2026.pdf
+  type: Documentation
+  note: Align 2.0 Fact Sheet, June 2026. Describes the CMEP platform; contains no API
+    reference.
+- url: https://en.wikipedia.org/wiki/North_American_Electric_Reliability_Corporation
+  type: Reference
+  note: 'Corroborating identity facts only: formation 28 March 2006, FERC ERO
+
+    designation 20 July 2006 under the Energy Policy Act of 2005, jurisdiction
+
+    over the contiguous US, Canada and part of Baja California, the six Regional
+
+    Entities, and Washington DC headquarters.
+
+    '
+actions:
+  openapiHarvested: false
+  specsCount: 0
+  collectionsHarvested: 0
+  apisYmlCreated: true
+  apisListed: 0
+  reason: 'Nothing was harvested because nothing real exists to harvest. NERC
+
+    publishes no machine-readable API contract of any kind. apis[] is empty by
+
+    design and no endpoint, host, scope or specification was invented. The four
+
+    undocumented Optimizely CMS search endpoints were verified live and are
+
+    recorded above as probe evidence rather than promoted to APIs.
+
+    '
