@@ -29,6 +29,17 @@ description: 'The North American Electric Reliability Corporation (NERC) is the 
   entirely. NERC is a regulator whose peer FERC publishes a documented public API and whose
   neighbour EIA publishes one of the best government APIs anywhere, while NERC itself publishes
   none.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.nerc.com/globalassets/nerc-logo.png
 tags:
 - Energy
